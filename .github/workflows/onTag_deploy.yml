@@ -9,38 +9,47 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Install hugo-extended and httrack via chocolatey
-      working-directory: .
-      run: |
-           choco install hugo-extended --version 0.57.2
-           # choco install httrack
+    #- name: Install hugo-extended and httrack via chocolatey
+    #  working-directory: .
+    #  run: |
+    #       choco install hugo-extended --version 0.57.2
+    #       # choco install httrack
+
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2
+      with:
+        hugo-version: '0.74.2'
+        extended: true
+        
 
     - name: Build into ./public
       working-directory: .
       run: |
            hugo --theme book
+           ls -latrR ./public/
 
-    #- name: deploy
-    #  uses: wlixcc/SFTP-Deploy-Action@v1.2.4
-    #  with:
-    #      username: 'tbd'
-    #      server: 'tbd'
-    #      ssh_private_key: ${{ secrets.UM_PRIVATE_KEY }}
-    #      local_path: './public/*'
-    #      remote_path: '.../some_public'
-    - name: samkirkland.deploy
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    - name: deploy
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
-        server: TBD
-        username: TBD
-        password: ${{ secrets.password }}
-        local-dir: ./public/
-        server-dir: some/folder/
+          username: 'tbd'
+          server: 'tbd'
+          ssh_private_key: ${{ secrets.UM_PRIVATE_KEY }}
+          local_path: './public/*'
+          remote_path: '.../some_public'
+
+    #- name: samkirkland.deploy
+    #  uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    #  with:
+    #    server: TBD
+    #    username: TBD
+    #    password: ${{ secrets.password }}
+    #    local-dir: ./public/
+    #    server-dir: some/folder/
 
     
