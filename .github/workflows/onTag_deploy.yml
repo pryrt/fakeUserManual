@@ -12,26 +12,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: 🚚 Checkout repo
       uses: actions/checkout@v3
 
-    - name: Setup Hugo-Extended v0.57.2
+    - name: 📡 Get Hugo-Extended v0.57.2
       uses: peaceiris/actions-hugo@v2
       with:
         hugo-version: '0.57.2'
         extended: true
 
-    - name: Build into ./public
+    - name: 🔨 Build into ./public
       working-directory: .
-      run: |
-           hugo --theme book
-           ls -latrR ./public/
+      run: hugo --theme book
 
-    - name: deploy
+    - name: 🎉 Deploy to npp-user-manual.org
       uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
           username: ${{ secrets.UM_PRIVATE_USERNAME }}
           server: ${{ secrets.UM_PRIVATE_HOST }}
           ssh_private_key: ${{ secrets.UM_PRIVATE_KEY }}
+          delete_remote_files: true
           local_path: './public/*'
           remote_path: 'www/um/'
