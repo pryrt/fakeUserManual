@@ -27,7 +27,6 @@ jobs:
            hugo --theme book
 
     - name: deploy
-      working-directory: .
       uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
           username: 'tbd'
