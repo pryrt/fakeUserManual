@@ -26,12 +26,21 @@ jobs:
       run: |
            hugo --theme book
 
-    - name: deploy
-      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+    #- name: deploy
+    #  uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+    #  with:
+    #      username: 'tbd'
+    #      server: 'tbd'
+    #      ssh_private_key: ${{ secrets.UM_PRIVATE_KEY }}
+    #      local_path: './public/*'
+    #      remote_path: '.../some_public'
+    - name: samkirkland.deploy
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-          username: 'tbd'
-          server: 'tbd'
-          ssh_private_key: ${{ secrets.UM_PRIVATE_KEY }}
-          local_path: './public/*'
-          remote_path: '.../some_public'
+        server: TBD
+        username: TBD
+        password: ${{ secrets.password }}
+        local-dir: ./public/
+        server-dir: some/folder/
 
+    
