@@ -21,39 +21,18 @@ jobs:
            choco install hugo-extended --version 0.57.2
            # choco install httrack
 
-    - name: Convert hugo site to standandalone HTML
+    - name: Build into ./public
       working-directory: .
       run: |
-           Get-ChildItem -Recurse
            hugo --theme book
-           Get-ChildItem -Recurse
-           
-           # cmd /c start hugo.exe server --theme book
-           # $env:Path += ";C:\Program Files\WinHTTrack\"
-           # httrack.exe "http://127.0.0.1:1313/" -O "./httrack_output"
-           # Set-Location -Path httrack_output
-           # Rename-Item -Path 127.0.0.1_1313 -NewName nppUserManual
-           # Get-ChildItem -Recurse "./nppUserManual" -Filter index.html | Foreach-Object {
-           #    $orgname = $_.FullName
-           #    $tmpname = "$($orgname).unedited"
-           #    echo $tmpname
-           #    Copy-Item $orgname $tmpname
-           #    get-content $tmpname | 
-           #         %{$_ -replace 'id="book-search-input" maxlength="64" readonly','id="book-search-input" maxlength="64" readonly hidden'} | 
-           #         %{$_ -replace 'href="http://localhost:1313/"','href="./index.html"'} | 
-           #         %{$_ -replace 'href="http://localhost:1313/','href="'} | 
-           #         set-content $orgname
-           #    Remove-Item $tmpname
-           #}
-           #Compress-Archive -Path nppUserManual -DestinationPath nppUserManual.zip
-           #Set-Location -Path ..
 
-    #- name: Store zipfile as asset
-    #  uses: svenstaro/upload-release-action@v2
-    #  with:
-    #    repo_token: ${{ secrets.GITHUB_TOKEN }}
-    #    file: ./httrack_output/nppUserManual.zip
-    #    asset_name: nppUserManual.zip
-    #    tag: ${{ github.ref }}
-    #    overwrite: true
-    #    body: "Some release text goes here"
+    - name: deploy
+      working-directory: .
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      with:
+          username: 'tbd'
+          server: 'tbd'
+          ssh_private_key: ${{ secrets.UM_PRIVATE_KEY }}
+          local_path: './public/*'
+          remote_path: '.../some_public'
+
